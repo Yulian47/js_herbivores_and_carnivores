@@ -7,19 +7,20 @@ class Animal {
     this.health = 100;
     Animal.alive.push(this);
   }
+
   die() {
-    const index = Animal.alive.indexOf(this);
-
-    if (index > -1) {
-      Animal.alive.splice(index, 1);
-    }
+    Animal.alive = Animal.alive.filter((animal) => animal !== this);
   }
-  checkHeals(damage) {
-    this.health -= damage;
 
+  checkHealth() {
     if (this.health <= 0) {
       this.die();
     }
+  }
+
+  takeDamage(damage) {
+    this.health -= damage;
+    this.checkHealth();
   }
 }
 
@@ -37,7 +38,7 @@ class Herbivore extends Animal {
 class Carnivore extends Animal {
   bite(target) {
     if (target instanceof Herbivore && !target.hidden) {
-      target.checkHeals(50);
+      target.takeDamage(50);
     }
   }
 }
